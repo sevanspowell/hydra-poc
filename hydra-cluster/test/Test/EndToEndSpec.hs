@@ -29,17 +29,18 @@ import Hydra.Cardano.Api (
   NetworkId (Testnet),
   NetworkMagic (NetworkMagic),
   PaymentKey,
+  SigningKey,
   TxId,
   TxIn (..),
   VerificationKey,
+  getVerificationKey,
   lovelaceToValue,
   mkVkAddress,
   serialiseAddress,
   unSlotNo,
  )
 import Hydra.Chain.Direct.Handlers (closeGraceTime)
-import Hydra.Crypto (deriveVerificationKey, generateSigningKey)
-import qualified Hydra.Crypto as Hydra
+import Hydra.Crypto (HydraKey, generateSigningKey)
 import Hydra.Ledger (txId)
 import Hydra.Ledger.Cardano (genKeyPair, mkSimpleTx)
 import Hydra.Logging (Tracer, showLogsOnFailure)
@@ -71,15 +72,15 @@ allNodeIds = [1 .. 3]
 
 spec :: Spec
 spec = around showLogsOnFailure $ do
-  let aliceSk, bobSk, carolSk :: Hydra.SigningKey
+  let aliceSk, bobSk, carolSk :: SigningKey HydraKey
       aliceSk = generateSigningKey "alice"
       bobSk = generateSigningKey "bob"
       carolSk = generateSigningKey "carol"
 
-      aliceVk, bobVk, carolVk :: Hydra.VerificationKey
-      aliceVk = deriveVerificationKey aliceSk
-      bobVk = deriveVerificationKey bobSk
-      carolVk = deriveVerificationKey carolSk
+      aliceVk, bobVk, carolVk :: VerificationKey HydraKey
+      aliceVk = getVerificationKey aliceSk
+      bobVk = getVerificationKey bobSk
+      carolVk = getVerificationKey carolSk
 
       alice, bob, carol :: Party
       alice = deriveParty aliceSk

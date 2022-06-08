@@ -21,10 +21,10 @@ import Control.Monad.Class.MonadTimer (timeout)
 import Control.Monad.IOSim (Failure (FailureDeadlock), IOSim, runSimTrace, selectTraceEventsDynamic)
 import GHC.Records (getField)
 import Hydra.API.Server (Server (..))
+import Hydra.Cardano.Api (SigningKey)
 import Hydra.Chain (Chain (..), ChainEvent (..), HeadParameters (..), OnChainTx (..), PostChainTx (..))
 import Hydra.ClientInput
-import Hydra.Crypto (aggregate, sign)
-import qualified Hydra.Crypto as Hydra
+import Hydra.Crypto (HydraKey, aggregate, sign)
 import Hydra.HeadLogic (
   Effect (ClientEffect),
   Environment (..),
@@ -534,7 +534,7 @@ nothingHappensFor node secs =
 
 withHydraNode ::
   forall s a.
-  Hydra.SigningKey ->
+  SigningKey HydraKey ->
   [Party] ->
   ConnectToChain SimpleTx (IOSim s) ->
   (TestHydraNode SimpleTx (IOSim s) -> IOSim s a) ->

@@ -9,8 +9,7 @@ import Cardano.Binary (serialize')
 import Cardano.Crypto.Util (SignableRepresentation (..))
 import Data.Aeson (object, withObject, (.:), (.=))
 import Hydra.Cardano.Api (SigningKey)
-import Hydra.Crypto (HydraKey)
-import qualified Hydra.Crypto as Hydra
+import Hydra.Crypto (HydraKey, MultiSignature, aggregate, generateSigningKey, sign)
 import Hydra.Ledger (IsTx (..))
 import Test.QuickCheck (frequency, suchThat)
 
@@ -74,7 +73,7 @@ data ConfirmedSnapshot tx
       }
   | ConfirmedSnapshot
       { snapshot :: Snapshot tx
-      , signatures :: Hydra.MultiSignature (Snapshot tx)
+      , signatures :: MultiSignature (Snapshot tx)
       }
   deriving (Generic, Eq, Show, ToJSON, FromJSON)
 
@@ -99,7 +98,7 @@ isInitialSnapshot = \case
 
 instance IsTx tx => Arbitrary (ConfirmedSnapshot tx) where
   arbitrary = do
-    ks <- fmap Hydra.generateSigningKey <$> arbitrary
+    ks <- fmap generateSigningKey <$> arbitrary
     utxo <- arbitrary
     genConfirmedSnapshot 0 utxo ks
 
@@ -140,5 +139,5 @@ genConfirmedSnapshot minSn utxo sks
     -- FIXME: This is another nail in the coffin to our current modeling of
     -- snapshots
     snapshot <- arbitrary `suchThat` \Snapshot{number} -> number > minSn
-    let signatures = Hydra.aggregate $ fmap (`Hydra.sign` snapshot) sks
+    let signatures = aggregate $ fmap (`sign` snapshot) sks
     pure $ ConfirmedSnapshot{snapshot, signatures}

@@ -34,7 +34,8 @@ import Graphics.Vty (
   termName,
  )
 import Graphics.Vty.Image (DisplayRegion)
-import qualified Hydra.Crypto as Hydra
+import Hydra.Cardano.Api (SigningKey)
+import Hydra.Crypto (HydraKey, generateSigningKey)
 import Hydra.Logging (showLogsOnFailure)
 import Hydra.Network (Host (..))
 import Hydra.Options (ChainConfig (..))
@@ -233,5 +234,5 @@ data TUILog
   | FromHydra EndToEndLog
   deriving (Show, Generic, ToJSON)
 
-aliceSk :: Hydra.SigningKey
-aliceSk = Hydra.generateSigningKey "alice"
+aliceSk :: SigningKey HydraKey
+aliceSk = generateSigningKey "alice"

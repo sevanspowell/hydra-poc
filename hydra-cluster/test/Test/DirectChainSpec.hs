@@ -27,6 +27,7 @@ import Control.Concurrent (MVar, newEmptyMVar, putMVar, takeMVar)
 import qualified Data.ByteString.Char8 as B8
 import Hydra.Cardano.Api (
   ChainPoint (..),
+  SigningKey,
   lovelaceToValue,
   txOutValue,
   unSlotNo,
@@ -46,8 +47,7 @@ import Hydra.Chain.Direct (
   withIOManager,
  )
 import Hydra.Chain.Direct.Handlers (DirectChainLog, closeGraceTime)
-import Hydra.Crypto (aggregate, generateSigningKey, sign)
-import qualified Hydra.Crypto as Hydra
+import Hydra.Crypto (HydraKey, aggregate, generateSigningKey, sign)
 import Hydra.Ledger (IsTx (..))
 import Hydra.Ledger.Cardano (Tx, genOneUTxOFor)
 import Hydra.Logging (nullTracer, showLogsOnFailure)
@@ -274,7 +274,7 @@ alice = deriveParty aliceSigningKey
 bob = deriveParty $ generateSigningKey "bob"
 carol = deriveParty $ generateSigningKey "carol"
 
-aliceSigningKey :: Hydra.SigningKey
+aliceSigningKey :: SigningKey HydraKey
 aliceSigningKey = generateSigningKey "alice"
 
 data TestClusterLog
