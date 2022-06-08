@@ -9,6 +9,7 @@ import Hydra.Cardano.Api (
   NetworkId (..),
   NetworkMagic (..),
   PaymentKey,
+  SigningKey,
   Tx,
   UTxO,
   VerificationKey,
@@ -28,6 +29,7 @@ import Hydra.Chain.Direct.State (
   initialize,
   observeTx,
  )
+import Hydra.Crypto (HydraKey)
 import qualified Hydra.Crypto as Hydra
 import Hydra.Ledger.Cardano (genOneUTxOFor, genTxIn, genUTxO, genVerificationKey, renderTx, simplifyUTxO)
 import Hydra.Ledger.Cardano.Evaluate (genPointInTime, slotNoToPOSIXTime)
@@ -44,7 +46,7 @@ import Test.QuickCheck (choose, elements, frequency, resize, suchThat, vector)
 -- be coherent.
 data HydraContext = HydraContext
   { ctxVerificationKeys :: [VerificationKey PaymentKey]
-  , ctxHydraSigningKeys :: [Hydra.SigningKey]
+  , ctxHydraSigningKeys :: [SigningKey HydraKey]
   , ctxNetworkId :: NetworkId
   , ctxContestationPeriod :: NominalDiffTime
   }

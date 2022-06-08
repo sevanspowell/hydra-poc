@@ -70,10 +70,12 @@ import Cardano.Api.Byron as X (
  )
 import Cardano.Api.Shelley as X (
   Address (..),
+  Key (..),
   PoolId,
   ProtocolParameters (..),
   ShelleyGenesis (..),
   ShelleyLedgerEra,
+  SigningKey (..),
   VerificationKey (..),
   fromPlutusData,
   toPlutusData,

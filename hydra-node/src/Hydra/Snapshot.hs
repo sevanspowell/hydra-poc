@@ -8,6 +8,8 @@ import Hydra.Prelude
 import Cardano.Binary (serialize')
 import Cardano.Crypto.Util (SignableRepresentation (..))
 import Data.Aeson (object, withObject, (.:), (.=))
+import Hydra.Cardano.Api (SigningKey)
+import Hydra.Crypto (HydraKey)
 import qualified Hydra.Crypto as Hydra
 import Hydra.Ledger (IsTx (..))
 import Test.QuickCheck (frequency, suchThat)
@@ -109,7 +111,7 @@ genConfirmedSnapshot ::
   -- this lower bound.
   SnapshotNumber ->
   UTxOType tx ->
-  [Hydra.SigningKey] ->
+  [SigningKey HydraKey] ->
   Gen (ConfirmedSnapshot tx)
 genConfirmedSnapshot minSn utxo sks
   | minSn > 0 = confirmedSnapshot
