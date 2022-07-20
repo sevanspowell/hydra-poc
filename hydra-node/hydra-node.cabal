@@ -87,6 +87,7 @@ library
     Hydra.ClientInput
     Hydra.ContestationPeriod
     Hydra.Crypto
+    Hydra.DidacticWaffle
     Hydra.HeadLogic
     Hydra.Ledger
     Hydra.Ledger.Cardano
@@ -251,6 +252,7 @@ test-suite tests
     Hydra.Chain.Direct.WalletSpec
     Hydra.ClientInputSpec
     Hydra.CryptoSpec
+    Hydra.DidacticWaffleSpec
     Hydra.FireForgetSpec
     Hydra.HeadLogicSpec
     Hydra.JSONSchema
