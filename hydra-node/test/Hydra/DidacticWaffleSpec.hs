@@ -8,4 +8,9 @@ import Test.QuickCheck ((===))
 
 spec :: Spec
 spec =
-  it "exists" $ State === State
+  it "can transition through full lifecycle" $
+    (initialize Params
+     & commit
+     & collect
+     & close
+     & fanout) == Final
